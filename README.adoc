@@ -1,0 +1,52 @@
+= bazel-kaizen
+Jochen Hinrichsen, jochen.hinrichsen@kambrium.net
+v0.1.0, 2018-02-18
+:numbered:
+:toc: left
+
+
+image::https://img.shields.io/badge/code%20style-gofmt-brightgreen.svg[alt="gofmt", link="https://golang.org/cmd/gofmt/"]
+image::https://img.shields.io/badge/editor-vim-brightgreen.svg[alt="vim", link="http://www.vim.org"]
+
+
+     The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+     NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
+     "OPTIONAL" in this document are to be interpreted as described in
+     RFC 2119.
+
+== Continuously improve Bazel build
+
+by transforming a Java compilation error into buildozer commands that fix the
+error. As a prerequisite, you need a working build verified by another build
+tool.
+
+Assuming a working Maven based build, the directory layout gives us a clear
+indication about what's going on:
+
+----
+org/mycompany/product/ui/src/main/java/ui/Fx.java
+----
+
+So, this tool will create the buildozer command "there's something called
+org_mycompany_product_ui, and a related source folder in src/main/java".
+
+On the next invocation, Fx will probably blow because it references other
+classes. Possible prospects and the generated buildozer commands are:
+
+existing bazel rules::
+	add a dependency to 'rule'
+
+external third party dependencies from WORKSPACE::
+	add an external dependency
+
+generated Java classes from genrule/ wsimport utility::
+	add dependency to genrule
+
+existing .java file without corresponding bazel rule::
+	create new bazel rule
+
+
+For now, the tool only runs once, and leaves the new BUILD file to manual
+inspection. If experience shows that the approach is valid, automatically
+re-running the tool and verifying that BUILD modifications are useful can be
+added.
