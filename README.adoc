@@ -50,3 +50,8 @@ For now, the tool only runs once, and leaves the new BUILD file to manual
 inspection. If experience shows that the approach is valid, automatically
 re-running the tool and verifying that BUILD modifications are useful can be
 added.
+
+== Migrate Maven jaxws-maven-plugin/ wsimport/ WSDL generation
+
+There's an external tool that converts Maven wsimport executions into Bazel
+genrules: https://gist.github.com/jhinrichsen/0fc9f7b041f76d3b2b1c6635fc2d202b
